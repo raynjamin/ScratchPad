@@ -1,4 +1,4 @@
-package com.theironyard.clt;
+package com.theironyard.game;
 
 /**
  * Created by Ben on 3/31/16.
@@ -8,7 +8,7 @@ public class Player {
     private String weapon;
     private String location;
 
-    Player(String name) {
+    public Player(String name) {
         this.name = name;
     }
 

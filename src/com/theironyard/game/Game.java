@@ -1,4 +1,4 @@
-package com.theironyard.clt;
+package com.theironyard.game;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -11,7 +11,7 @@ public class Game {
     private static Scanner input = new Scanner(System.in);
     private static PrintStream output = System.out;
 
-    Game() {
+    public Game() {
         greetPlayer();
         buildPlayer();
     }
@@ -21,6 +21,7 @@ public class Game {
     }
 
     private void buildPlayer() {
+
         output.println("What is your name?");
 
         String name = input.nextLine();
