@@ -17,6 +17,15 @@ public class Game {
         buildPlayers();
     }
 
+    public void start() {
+        // for player one (players[0])
+        // ask for a weapon and assign it to player[0]'s weapon
+        // ask for a location and assign it to player [0]'s location
+        // ask how many enemies player[0] has slain and assign it to player
+
+        // print out all this information
+    }
+
     private static void greetPlayer() {
         output.println("Hi from Text Adventure!!!");
     }

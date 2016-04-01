@@ -7,9 +7,18 @@ public class Player {
     private String name;
     private String weapon;
     private String location;
+    private int enemiesSlain;
 
     public Player(String name) {
         this.name = name;
+    }
+
+    public int getEnemieSlain() {
+        return this.enemiesSlain;
+    }
+
+    public void setEnemiesSlain(int enemiesSlain) {
+        this.enemiesSlain = enemiesSlain;
     }
 
     public String getWeapon() {
