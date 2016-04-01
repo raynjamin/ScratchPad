@@ -3,29 +3,30 @@ package com.theironyard.game;
 import java.io.PrintStream;
 import java.util.Scanner;
 
+
 /**
  * Created by Ben on 3/31/16.
  */
 public class Game {
-    Player player;
+    public Player[] players = new Player[3]; // [null, null, null]
     private static Scanner input = new Scanner(System.in);
     private static PrintStream output = System.out;
 
     public Game() {
         greetPlayer();
-        buildPlayer();
+        buildPlayers();
     }
 
     private static void greetPlayer() {
         output.println("Hi from Text Adventure!!!");
     }
 
-    private void buildPlayer() {
+    private void buildPlayers() {
 
-        output.println("What is your name?");
-
-        String name = input.nextLine();
-
-        player = new Player(name);
+        for(int i = 0;i < players.length;i++) {
+            output.println("What is player " + (i + 1) + "'s name?");
+            String name = input.nextLine();
+            players[i] = new Player(name);
+        }
     }
 }
