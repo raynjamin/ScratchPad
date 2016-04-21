@@ -9,17 +9,13 @@ public class Main {
 
     public static int[] climb(int start, int length) {
         int[] results = new int[length];
-        int growValue = 0;
 
         for (int i = 0;i < length;i++) {
-
             if (i == 0) {
                 results[i] = start;
             } else {
-                results[i] = results[i-1] + growValue;
+                results[i] = results[i-1] + i;
             }
-
-            growValue++;
         }
 
         return results;
