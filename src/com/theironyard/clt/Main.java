@@ -5,6 +5,30 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
+        // write your code here
+
+    }
+
+    public static String phoneNum(String crappyPhoneNum) {
+        String results = crappyPhoneNum;
+
+        results = results.replaceAll("[^\\d]", "");
+
+        if (results.length() == 7) {
+            results = String.format("%s-%s",
+                    results.substring(0, 3),
+                    results.substring(3));
+
+        } else if (results.length() == 10) {
+            results = String.format("(%s) %s-%s",
+                    results.substring(0, 3),
+                    results.substring(3, 6),
+                    results.substring(6, 10));
+        } else {
+            throw new IllegalArgumentException("This isn't a valid phone number.");
+        }
+
+        return results;
     }
 
     public static int[] climb(int start, int length) {
