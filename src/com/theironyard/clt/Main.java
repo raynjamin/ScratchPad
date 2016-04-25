@@ -1,12 +1,39 @@
 package com.theironyard.clt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Main {
 
     public static void main(String[] args) {
         // write your code here
 
+    }
+
+    public static Integer[] divisiblesSimpler(int[] base, int[] divisors) {
+        int divisor = 1;
+        ArrayList<Integer> validElements = new ArrayList<>();
+
+        for(int i = 0;i < divisors.length;i++) {
+            divisor *= divisors[i];
+        }
+
+        for(int i = 0;i < base.length;i++) {
+            if (base[i] % divisor == 0) {
+                validElements.add(base[i]);
+            }
+        }
+
+        return validElements.toArray(new Integer[0]);
+    }
+
+    public static int[] divisibles(int[] base, int[] divisors){
+        int divisor =
+                Arrays.stream(divisors)
+                    .reduce(1, (a, b) -> a * b);
+
+        return Arrays.stream(base)
+                .filter(i -> i % divisor == 0).toArray();
     }
 
     public static String phoneNum(String crappyPhoneNum) {
@@ -91,5 +118,4 @@ public class Main {
 
         }
     }
-
 }

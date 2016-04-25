@@ -12,6 +12,13 @@ import static org.junit.Assert.*;
 public class MainTest {
 
     @Test
+    public void divisiblesWork() {
+        assertArrayEquals(new Integer[] { 18 }, Main.divisiblesSimpler(new int[] { 10, 4, 18, 11, 91}, new int[] { 2, 9 }));
+        assertArrayEquals(new Integer[] { 10, 4, 18 }, Main.divisiblesSimpler(new int[] { 10, 4, 18, 11, 91}, new int[] { 2 }));
+        assertArrayEquals(new Integer[] { 18 }, Main.divisiblesSimpler(new int[] { 10, 4, 18, 11, 91}, new int[] { 3 }));
+    }
+
+    @Test
     public void phoneNumsGetNormalized() throws Exception {
         assertEquals("(812) 671-3221", Main.phoneNum("8126713221"));
         assertEquals("(910) 875-6789", Main.phoneNum("(910)8756789"));
