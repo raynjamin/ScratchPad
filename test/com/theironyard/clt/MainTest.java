@@ -10,6 +10,21 @@ import static org.junit.Assert.*;
  * Created by Ben on 4/19/16.
  */
 public class MainTest {
+    @Test
+    public void boostBoosts() {
+        assertEquals(230, Main.boost(129));   // 230
+        assertEquals(50, Main.boost(49));    // 50
+        assertEquals(523, Main.boost(412));   // 523
+    }
+
+    @Test
+    public void changeMachineSpitsOutBills() {
+        assertArrayEquals(new int[] { 2, 1, 0, 2}, Main.changeMe(47));
+        assertArrayEquals(new int[] { 0, 0, 0, 1}, Main.changeMe(20));
+        assertArrayEquals(new int[] { 1, 0, 1, 1}, Main.changeMe(31));
+        assertArrayEquals(new int[] { 0, 0, 0, 3}, Main.changeMe(60));
+    }
+
 
     @Test
     public void wordsAreBalanced() {

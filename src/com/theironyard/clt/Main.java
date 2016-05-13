@@ -1,24 +1,89 @@
 package com.theironyard.clt;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.stream.DoubleStream;
+import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
-        // write your code here
-//        gimme(new int[] { 1, 2, 3, 4, 5, 6, 7});
-//        gimme(new int[] { 10, 20, 30, 40, 50 });
-//
-//        Double test = pursuit(new Mover(0, 100), new Mover(200, 10));
-//        fizzBuzz3(15);
+        System.out.println(mather(new Adder(), 5, 6)); // 11
+        System.out.println(mather(new Subtractor(), 5, 6)); // -1
+
+        System.out.println(mather((a, b) -> a * b, 5, 6)); // 30
+    }
+
+    public static int mather(Mather input, int a, int b) {
+        return input.action(a, b);
+    }
+
+    public static int boost(Integer input) {
+        char[] arr = input.toString().toCharArray();
+
+        for (int i = 0;i < arr.length;i++)  {
+            Character c = arr[i];
+
+            Integer digit = Integer.valueOf(c.toString());
+
+            digit = digit < 9 ? ++digit : 0;
+
+            arr[i] = digit.toString().toCharArray()[0];
+        }
+
+
+        return Integer.valueOf(String.valueOf(arr));
+    }
+
+    public static void findLotteryWinner() {
+
+        Lottery lottery = new Lottery();
+
+        lottery.guess("Jenna", 17);
+        lottery.guess("Seth",  77);
+        lottery.guess("Prince", 42);
+
+
+        for(int i = 0;i < 100;i++) {
+            lottery.pick();
+        }
+
+        HashMap<String, Integer> winners = lottery.getWinners();
+
+        if (winners.size() == 0) {
+            System.out.println("No winners this time.");
+        } else {
+            winners.forEach((key, value) -> {
+                System.out.printf("%s wins bacon!\n", key);
+            });
+        }
+    }
+
+
+
+     public static int[] changeMe(int dollarAmount) {
+        int twenties = 0, tens = 0, fives = 0, ones = 0;
+
+        twenties = dollarAmount / 20;
+
+        if (twenties > 0) {
+            dollarAmount -= twenties * 20;
+        }
+
+        tens = dollarAmount / 10;
+
+        if (tens > 0) {
+            dollarAmount -= tens * 10;
+        }
+
+        fives = dollarAmount / 5;
+
+        if (fives > 0) {
+            dollarAmount -= fives * 5;
+        }
+
+        ones = dollarAmount;
+
+        return new int[] { ones, fives, tens, twenties };
+
     }
 
     public static boolean balanced(String word, String test) {
@@ -172,7 +237,7 @@ public class Main {
     }
 
     public static int cherokeeHair(int start, double rate, int weeks) {
-        return (int)(start*Math.pow(1 + rate, weeks));
+        return (int)(start* Math.pow(1 + rate, weeks));
     }
 
     public static Integer[] divisiblesSimpler(int[] base, int[] divisors) {
@@ -219,6 +284,18 @@ public class Main {
         } else {
             throw new IllegalArgumentException("This isn't a valid phone number.");
         }
+
+        int time = 5;
+
+        Thread a = new Thread(() -> {
+            try {
+                Thread.sleep(time * 1000);
+            } catch (InterruptedException ex) {
+
+            }
+
+
+        });
 
         return results;
     }
