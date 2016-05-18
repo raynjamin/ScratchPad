@@ -1,15 +1,82 @@
 package com.theironyard.clt;
 
+import junit.extensions.TestSetup;
+
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
+import static java.util.Comparator.comparing;
 
 public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
-        System.out.println(mather(new Adder(), 5, 6)); // 11
-        System.out.println(mather(new Subtractor(), 5, 6)); // -1
+        ArrayList<Transaction> transactions = new ArrayList<>();
 
-        System.out.println(mather((a, b) -> a * b, 5, 6)); // 30
+        transactions.add(new Transaction(Transaction.TransactionType.BILLS, 1, 400));
+        transactions.add(new Transaction(Transaction.TransactionType.GROCERY, 2, 250));
+        transactions.add(new Transaction(Transaction.TransactionType.ONLINE_SHOPPING, 3, 10));
+        transactions.add(new Transaction(Transaction.TransactionType.BILLS, 4, 1200));
+        transactions.add(new Transaction(Transaction.TransactionType.GAS, 5, 150));
+        transactions.add(new Transaction(Transaction.TransactionType.GROCERY, 6, 234));
+        transactions.add(new Transaction(Transaction.TransactionType.UTILITIES, 7, 250));
+        transactions.add(new Transaction(Transaction.TransactionType.GROCERY, 8, 100));
+        transactions.add(new Transaction(Transaction.TransactionType.ONLINE_SHOPPING, 9, 8));
+        transactions.add(new Transaction(Transaction.TransactionType.ONLINE_SHOPPING, 10, 15));
+        transactions.add(new Transaction(Transaction.TransactionType.BILLS, 11, 360));
+        transactions.add(new Transaction(Transaction.TransactionType.GROCERY, 12, 110));
+        transactions.add(new Transaction(Transaction.TransactionType.GAS, 13, 80));
+        transactions.add(new Transaction(Transaction.TransactionType.BILLS, 14, 630));
+        transactions.add(new Transaction(Transaction.TransactionType.BILLS, 15, 75));
+
+        System.out.println(transactions.stream()
+                .filter( t -> t.getType() == Transaction.TransactionType.BILLS)
+                .collect(Collectors.summingInt(Transaction::getValue)));
+
+        Map<Transaction.TransactionType, List<Transaction>> transactionMap =
+                transactions.stream()
+                .collect(Collectors.groupingBy(Transaction::getType));
+
+
+        transactionMap.forEach( (k, v) -> {
+            System.out.printf("Type: %s, Number of transactions: %d\n", k.toString(), v.size());
+        });
+    }
+
+    public static int maxSpan(Integer[] integers) {
+        List<Integer> list = Arrays.asList(integers);
+
+        int max = 1;
+
+        for (Integer i : list) {
+            // if there is only one digit of this kind in the array,
+            // the difference will return 0. We need to add 1 to any
+            // array index difference to get the inclusive max.
+            int diff = list.lastIndexOf(i) - list.indexOf(i) + 1;
+
+            if (diff > max) {
+                max = diff;
+            }
+        }
+
+        return max;
+    }
+
+    public static double monteCarloPi(long iterations) {
+
+        int inside = 0;
+
+        for(long i = 0;i < iterations;i++) {
+            Point randomPoint = Point.generateRandom();
+            double distance = Math.sqrt(Math.pow(randomPoint.getX(), 2.0) + Math.pow(randomPoint.getY(), 2.0));
+
+            if (distance <= 1) {
+                inside++;
+            }
+        }
+
+        return 4 * (double)inside/iterations;
     }
 
     public static int mather(Mather input, int a, int b) {
@@ -57,9 +124,7 @@ public class Main {
         }
     }
 
-
-
-     public static int[] changeMe(int dollarAmount) {
+    public static int[] changeMe(int dollarAmount) {
         int twenties = 0, tens = 0, fives = 0, ones = 0;
 
         twenties = dollarAmount / 20;

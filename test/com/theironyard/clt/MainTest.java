@@ -11,6 +11,18 @@ import static org.junit.Assert.*;
  */
 public class MainTest {
     @Test
+    public void maxSpan() {
+        assertEquals(4, Main.maxSpan(new Integer[] { 1, 2, 1, 1, 3 }));
+        assertEquals(6, Main.maxSpan(new Integer[] { 1, 4, 2, 1, 4, 1, 4 }));
+        assertEquals(6, Main.maxSpan(new Integer[] { 1, 4, 2, 1, 4, 4, 4 }));
+    }
+
+    @Test
+    public void monteCarloWorks() {
+        assertEquals(Math.PI, Main.monteCarloPi(10000L), .1);
+    }
+
+    @Test
     public void boostBoosts() {
         assertEquals(230, Main.boost(129));   // 230
         assertEquals(50, Main.boost(49));    // 50
