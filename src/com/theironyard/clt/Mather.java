@@ -5,7 +5,6 @@ package com.theironyard.clt;
  * perform an action that takes in two integers,
  * and returns one.
  */
-
 @FunctionalInterface
 public interface Mather {
 

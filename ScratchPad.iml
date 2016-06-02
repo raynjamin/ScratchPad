@@ -10,5 +10,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="junit:junit:4.12" level="project" />
+    <orderEntry type="library" name="org.jscience:jscience:4.3.1" level="project" />
+    <orderEntry type="library" name="javax.measure:jsr-275:1.0.0" level="project" />
   </component>
 </module>

@@ -1,10 +1,25 @@
 package com.theironyard.clt;
 
+import static javax.measure.unit.SI.*;
+import static javax.measure.unit.NonSI.*;
+import static org.jscience.economics.money.Currency.*;
+
+import com.sun.deploy.util.StringUtils;
+import com.sun.tools.javac.util.ArrayUtils;
 import junit.extensions.TestSetup;
+import org.jscience.economics.money.*;
+import org.jscience.economics.money.Currency;
+import org.jscience.physics.amount.Amount;
+import sun.misc.Regexp;
 
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.Comparator.comparing;
@@ -12,6 +27,177 @@ import static java.util.Comparator.comparing;
 public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
+//        MountainBike bike = new MountainBike(4, 4, 4, 21);
+        List<Double> test = new ArrayList<>();
+
+        test.add(1.0);
+        test.add(2.0);
+        test.add(3.0);
+
+        System.out.println(Algorithm.sumOfList(test));
+
+        Algorithm.testMethod(5);
+
+        Amount<Money> start = Amount.valueOf(19.99, USD);
+
+        start = start.times(1.15);
+
+        System.out.println(start.toText());
+    }
+
+    public static int countYZ(String input) {
+        Matcher m = Pattern.compile("(\\w+)").matcher(input);
+        int wordCount = 0;
+
+        while (m.find()) {
+            if (m.group(0).matches("\\w+[zZyY]{1}"))
+                wordCount++;
+        }
+
+        return wordCount;
+    }
+
+    public static Map<String, Integer> wordLen(String[] strings) {
+        return Arrays.asList(strings)
+                .stream()
+                .distinct()
+                .collect(Collectors.toMap(k -> k, v -> v.length()));
+    }
+
+    public static int sumNumbers(String input) {
+        Matcher matcher = Pattern.compile("(\\d+)").matcher(input);
+        int sum = 0;
+
+        while (matcher.find()) {
+            for(int i = 1;i <= matcher.groupCount();i++) {
+                sum += Integer.parseInt(matcher.group(i));
+            }
+        }
+
+        return sum;
+    }
+
+    /**
+     * Given an array of integers, returns the number of integer clumps in the array.
+     * @param input The array of integers to review
+     * @return The number of clumps present in the array.
+     */
+    public static int clumps(int[] input) {
+        int clumps = 0;
+
+        for (int i = 0;i < input.length - 1;i++) {
+
+            if (input[i + 1] == input[i]) {
+                clumps++;
+            }
+
+            while (i < input.length - 1 && input[i + 1] == input[i]) {
+                i++;
+            }
+        }
+
+        return clumps;
+    }
+
+    public static boolean equalIsNot(String input) {
+        // by default, split trims any empty array elements at the end of
+        // the array. Passing in a negative number stops that from happening.
+        return input.split("is", -1).length == input.split("not", -1).length;
+    }
+
+    public static Map<String, Boolean> wordMultiple(String[] input) {
+        List<String> listInput = Arrays.asList(input);
+
+        return Arrays.stream(input)
+                .distinct()
+                .collect(
+                    Collectors.toMap(
+                        s -> s,
+                        s -> listInput.indexOf(s) != listInput.lastIndexOf(s))
+                );
+    }
+
+//    public static Object[] primeFactors(long max) {
+//        max = (long)Math.sqrt((double)max);
+//
+//        Stream<Long> longStream = LongStream.range(0, max).mapToObj(Long::new).parallel();
+//
+//        for (long i = 2;i < max;i++) {
+//
+//            Object[] currArr = longStream.toArray();
+//
+//            for (long j = 0; j < currArr.length;j++) {
+//                if (currArr[j]
+//            }
+//
+//            longStream = longStream.filter(l -> j % l != 0);
+//        }
+//
+//        return longStream.toArray();
+//    }
+
+
+    static String phoneNumRedux(String input) {
+        input = input.replaceAll("[^\\d]", "");
+
+        if (input.length() == 10) {
+            return String.format("(%s) %s-%s",
+                    input.substring(0, 3),
+                    input.substring(3, 6),
+                    input.substring(6));
+        } else {
+            return String.format("%s-%s",
+                    input.substring(0, 3),
+                    input.substring(3));
+        }
+    }
+
+    static boolean isNarcissistic(Integer input) {
+        char[] numbers = input.toString().toCharArray();
+
+        int sum = 0;
+
+        for(char i : numbers) {
+            sum += Math.pow(Character.getNumericValue(i), numbers.length);
+        }
+
+        return sum == input;
+    }
+
+    static void printSumOfEvenFibs(int maxFib) {
+        int sum = 0;
+        ArrayList<Integer> fibs = new ArrayList<>();
+
+        fibs.add(1);
+        fibs.add(2);
+
+        int nextFib = 2;
+
+        do {
+            if (nextFib % 2 == 0) {
+                sum += nextFib;
+            }
+
+            nextFib = fibs.get(fibs.size() - 1) + fibs.get(fibs.size() - 2);
+            fibs.add(nextFib);
+        } while (nextFib < maxFib);
+
+        System.out.println(sum);
+    }
+
+    static void printSumOfFactors(int top) {
+        int sum = 0;
+
+        for (int i = 0;i < top;i++) {
+            if (i % 3 == 0 || i % 5 == 0) {
+                sum += i;
+            }
+        }
+
+        System.out.println(sum);
+    }
+
+    static void puttingThisHereSoItsNotInMain() {
         ArrayList<Transaction> transactions = new ArrayList<>();
 
         transactions.add(new Transaction(Transaction.TransactionType.BILLS, 1, 400));
@@ -36,7 +222,7 @@ public class Main {
 
         Map<Transaction.TransactionType, List<Transaction>> transactionMap =
                 transactions.stream()
-                .collect(Collectors.groupingBy(Transaction::getType));
+                        .collect(Collectors.groupingBy(Transaction::getType));
 
 
         transactionMap.forEach( (k, v) -> {
@@ -44,7 +230,7 @@ public class Main {
         });
     }
 
-    public static int maxSpan(Integer[] integers) {
+    static int maxSpan(Integer[] integers) {
         List<Integer> list = Arrays.asList(integers);
 
         int max = 1;
@@ -63,7 +249,7 @@ public class Main {
         return max;
     }
 
-    public static double monteCarloPi(long iterations) {
+    static double monteCarloPi(long iterations) {
 
         int inside = 0;
 
@@ -79,11 +265,11 @@ public class Main {
         return 4 * (double)inside/iterations;
     }
 
-    public static int mather(Mather input, int a, int b) {
+    static int mather(Mather input, int a, int b) {
         return input.action(a, b);
     }
 
-    public static int boost(Integer input) {
+    static int boost(Integer input) {
         char[] arr = input.toString().toCharArray();
 
         for (int i = 0;i < arr.length;i++)  {
@@ -100,7 +286,7 @@ public class Main {
         return Integer.valueOf(String.valueOf(arr));
     }
 
-    public static void findLotteryWinner() {
+    static void findLotteryWinner() {
 
         Lottery lottery = new Lottery();
 
@@ -124,7 +310,7 @@ public class Main {
         }
     }
 
-    public static int[] changeMe(int dollarAmount) {
+    static int[] changeMe(int dollarAmount) {
         int twenties = 0, tens = 0, fives = 0, ones = 0;
 
         twenties = dollarAmount / 20;
@@ -151,7 +337,7 @@ public class Main {
 
     }
 
-    public static boolean balanced(String word, String test) {
+    static boolean balanced(String word, String test) {
         int sameCount = 0, differentCount = 0;
 
         for (Character s : word.toCharArray()) {
@@ -165,14 +351,14 @@ public class Main {
         return sameCount == differentCount;
     }
 
-    public static boolean uncharted(Integer[] a, Integer[] b) {
+    static boolean uncharted(Integer[] a, Integer[] b) {
         HashSet<Integer> setA = new HashSet<>(Arrays.asList(a));
         HashSet<Integer> setB = new HashSet<>(Arrays.asList(b));
 
         return setA.equals(setB);
     }
 
-    public static void fizzBuzz(int maxNumber) {
+    static void fizzBuzz(int maxNumber) {
         for (int i =  1;i <= maxNumber;i++) {
             System.out.println(
                     i % 15 == 0 ?
@@ -184,7 +370,7 @@ public class Main {
         }
     }
 
-    public static void fizzBuzz2(int maxNumber) {
+    static void fizzBuzz2(int maxNumber) {
         for(int i = 1; i <= maxNumber;i++) {
             if (i % 3 == 0 && i % 5 == 0) {
                 System.out.println("FizzBuzz");
@@ -198,7 +384,7 @@ public class Main {
         }
     }
 
-    public static void fizzBuzz3(int maxNumber) {
+    static void fizzBuzz3(int maxNumber) {
         if (maxNumber > 1) {
             fizzBuzz3(maxNumber - 1);
         }
@@ -227,7 +413,7 @@ public class Main {
         return results;
     }
 
-    public static double bonus(double dollaAmount) {
+    static double bonus(double dollaAmount) {
         double baseTip = dollaAmount * .2;
         double amountWithTip = dollaAmount  + baseTip;
         double additionalTip = Math.ceil(amountWithTip) - amountWithTip;
@@ -235,7 +421,7 @@ public class Main {
         return baseTip + additionalTip;
     }
 
-    public static int desirables(String input) {
+    static int desirables(String input) {
         int results = 0;
 
         for(int i = 0;i < input.length();i++) {
@@ -253,7 +439,7 @@ public class Main {
         return results;
     }
 
-    public static Color colorBlender2(Color[] colors) {
+    static Color colorBlender2(Color[] colors) {
         // take the average color for red, green, and blue
         int redSum = 0, greenSum = 0, blueSum = 0;
 
@@ -272,7 +458,7 @@ public class Main {
 
     }
 
-    public static Color colorBlender(Color[] colors) {
+    static Color colorBlender(Color[] colors) {
         int averageRed = Arrays.stream(colors).mapToInt(c -> c.getRed()).reduce(0, (n, m) -> n + m) / colors.length;
         int averageGreen = Arrays.stream(colors).mapToInt(c -> c.getGreen()).reduce(0, (n, m) -> n + m) / colors.length;
         int averageBlue = Arrays.stream(colors).mapToInt(c -> c.getBlue()).reduce(0, (n, m) -> n + m) / colors.length;
@@ -280,7 +466,7 @@ public class Main {
         return new Color(averageRed, averageGreen, averageBlue);
     }
 
-    public static double pursuit(Mover a, Mover b) {
+    static double pursuit(Mover a, Mover b) {
         Mover first = a.position < b.position ? a : b;
         Mover second = a.position < b.position ? b : a;
 
@@ -295,17 +481,17 @@ public class Main {
         return (first.speed * time) + first.position;
     }
 
-    public static int gimme(int[] input) {
+    static int gimme(int[] input) {
         int max = (int)(Math.random()*input.length);
 
         return input[max];
     }
 
-    public static int cherokeeHair(int start, double rate, int weeks) {
+    static int cherokeeHair(int start, double rate, int weeks) {
         return (int)(start* Math.pow(1 + rate, weeks));
     }
 
-    public static Integer[] divisiblesSimpler(int[] base, int[] divisors) {
+    static Integer[] divisiblesSimpler(int[] base, int[] divisors) {
         int divisor = 1;
         ArrayList<Integer> validElements = new ArrayList<>();
 
@@ -322,7 +508,7 @@ public class Main {
         return validElements.toArray(new Integer[0]);
     }
 
-    public static int[] divisibles(int[] base, int[] divisors){
+    static int[] divisibles(int[] base, int[] divisors){
         int divisor =
                 Arrays.stream(divisors)
                     .reduce(1, (a, b) -> a * b);
@@ -331,7 +517,7 @@ public class Main {
                 .filter(i -> i % divisor == 0).toArray();
     }
 
-    public static String phoneNum(String crappyPhoneNum) {
+    static String phoneNum(String crappyPhoneNum) {
         String results = crappyPhoneNum;
 
         results = results.replaceAll("[^\\d]", "");
@@ -350,22 +536,10 @@ public class Main {
             throw new IllegalArgumentException("This isn't a valid phone number.");
         }
 
-        int time = 5;
-
-        Thread a = new Thread(() -> {
-            try {
-                Thread.sleep(time * 1000);
-            } catch (InterruptedException ex) {
-
-            }
-
-
-        });
-
         return results;
     }
 
-    public static int[] climb(int start, int length) {
+    static int[] climb(int start, int length) {
         int[] results = new int[length];
 
         for (int i = 0;i < length;i++) {
@@ -379,7 +553,7 @@ public class Main {
         return results;
     }
 
-    public static String reverseWorse(String input) {
+    static String reverseWorse(String input) {
         char[] chars = input.toCharArray();
         StringBuilder sb = new StringBuilder();
 
@@ -390,7 +564,7 @@ public class Main {
         return sb.toString();
     }
 
-    public static String reverse(String input) {
+    static String reverse(String input) {
         char[] chars = input.toCharArray();
 
 
@@ -405,7 +579,7 @@ public class Main {
         return String.valueOf(chars);
     }
 
-    public static ArrayList<Integer> fibseq(int x) {
+    static ArrayList<Integer> fibseq(int x) {
         ArrayList<Integer> base = new ArrayList<>();
 
         base.add(1);

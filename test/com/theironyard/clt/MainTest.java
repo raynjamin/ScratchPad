@@ -3,6 +3,8 @@ package com.theironyard.clt;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -10,6 +12,82 @@ import static org.junit.Assert.*;
  * Created by Ben on 4/19/16.
  */
 public class MainTest {
+    @Test
+    public void countYZ() {
+        assertEquals(2, Main.countYZ("fez day"));
+        assertEquals(2, Main.countYZ("day fez"));
+        assertEquals(3, Main.countYZ("day asdf asdf asdf asdf asdf adfsY fyyyZ"));
+    }
+
+    @Test
+    public void wordLen() {
+        Map<String, Integer> expected = new HashMap<>();
+
+        expected.put("a", 1);
+        expected.put("bb", 2);
+        assertEquals(expected, Main.wordLen(new String[] { "a", "bb", "a", "bb" }));
+
+        expected = new HashMap<>();
+
+        expected.put("that", 4);
+        expected.put("this", 4);
+        expected.put("and", 3);
+        assertEquals(expected, Main.wordLen(new String[] { "this", "and", "that", "and" }));
+
+        expected = new HashMap<>();
+
+        expected.put("bug", 3);
+        expected.put("code", 4);
+        assertEquals(expected, Main.wordLen(new String[] { "code", "code", "code", "bug" }));
+    }
+
+    @Test
+    public void sumNumbers() {
+        assertEquals(123, Main.sumNumbers("abc123xyz"));
+        assertEquals(44, Main.sumNumbers("aa11b33"));
+        assertEquals(18, Main.sumNumbers("7 11"));
+    }
+
+    @Test
+    public void countClumpsTest() {
+        assertEquals(2, Main.clumps(new int[] { 1, 2, 2, 3, 4, 4 }));
+        assertEquals(2, Main.clumps(new int[] { 1, 1, 2, 1, 1 }));
+        assertEquals(1, Main.clumps(new int[] { 1, 1, 1, 1, 1 }));
+    }
+
+    @Test
+    public void equalsIsNotTest() {
+        assertFalse(Main.equalIsNot("This is not"));
+        assertTrue(Main.equalIsNot("This is notnot"));
+        assertTrue(Main.equalIsNot("noisxxnotyynotxisi"));
+    }
+
+    @Test
+    public void wordMultipleWorks() {
+        Map<String, Boolean> sampleOutput = new HashMap<>();
+
+        sampleOutput.put("b", true);
+        sampleOutput.put("c", false);
+        sampleOutput.put("a", true);
+
+        assertEquals(sampleOutput, Main.wordMultiple(new String[] { "a", "b", "a", "c", "b" }));
+
+    }
+
+    @Test
+    public void phoneNumReduxIsNormalized() throws Exception {
+        assertEquals("(812) 671-3221", Main.phoneNumRedux("8126713221"));
+        assertEquals("(910) 875-6789", Main.phoneNumRedux("(910)8756789"));
+        assertEquals("(565) 987-6880", Main.phoneNumRedux("565 987 6880"));
+        assertEquals("727-9331", Main.phoneNumRedux("7  2 7--933-1"));
+    }
+
+    @Test
+    public void narccisism() {
+        assertTrue(Main.isNarcissistic(153));
+        assertTrue(Main.isNarcissistic(1634));
+    }
+
     @Test
     public void maxSpan() {
         assertEquals(4, Main.maxSpan(new Integer[] { 1, 2, 1, 1, 3 }));
