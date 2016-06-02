@@ -45,6 +45,26 @@ public class Main {
         System.out.println(start.toText());
     }
 
+    public static int count8(int input) {
+        boolean foundEight = input % 10 == 8;
+
+        input /= 10;
+
+        boolean prevEight = input % 10 == 8;
+
+        if (foundEight) {
+            if (prevEight) {
+                return input == 0 ? 2 : 2 + count8(input);
+            } else {
+                return input == 0 ? 1 : 1 + count8(input);
+            }
+
+        } else {
+            return input == 0 ? 0 : count8(input);
+        }
+    }
+
+
     public static int countYZ(String input) {
         Matcher m = Pattern.compile("(\\w+)").matcher(input);
         int wordCount = 0;

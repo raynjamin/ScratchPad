@@ -13,6 +13,13 @@ import static org.junit.Assert.*;
  */
 public class MainTest {
     @Test
+    public void count8Counts() {
+        assertEquals(1, Main.count8(8));
+        assertEquals(2, Main.count8(818));
+        assertEquals(4, Main.count8(8818));
+    }
+
+    @Test
     public void countYZ() {
         assertEquals(2, Main.countYZ("fez day"));
         assertEquals(2, Main.countYZ("day fez"));
