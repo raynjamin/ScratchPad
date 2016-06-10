@@ -13,10 +13,56 @@ import static org.junit.Assert.*;
  */
 public class MainTest {
     @Test
+    public void linearIn() {
+        assertTrue(Main.linearIn(new Integer[] { 1, 2, 4, 6 }, new Integer[] { 2, 4 }));
+        assertFalse(Main.linearIn(new Integer[] { 1, 2, 4, 6 }, new Integer[] { 2, 3, 4 }));
+        assertTrue(Main.linearIn(new Integer[] { 1, 2, 4, 4, 6 }, new Integer[] { 2, 4 }));
+    }
+
+    @Test
+    public void mixString() {
+        assertEquals("axbycz", Main.mixString("abc", "xyz"));
+        assertEquals("HTihere", Main.mixString("Hi", "There"));
+        assertEquals("xTxhxexre", Main.mixString("xxxx", "There"));
+    }
+
+
+    @Test
+    public void isEverywhere() {
+        assertTrue(Main.isEverywhere(new int[] { 1, 2, 1, 3}, 1));
+        assertFalse(Main.isEverywhere(new int[] { 1, 2, 1, 3 }, 2));
+        assertFalse(Main.isEverywhere(new int[] { 1, 2, 1, 3, 4 } , 1));
+        assertFalse(Main.isEverywhere(new int[] { 1, 2, 2, 1 } , 1));
+    }
+    @Test
+    public void centeredAverage() {
+        assertEquals(3, Main.centeredAverage(new int[] { 1, 2, 3, 4, 100 }));
+        assertEquals(5, Main.centeredAverage(new int[] { 1, 1, 5, 5, 10, 8, 7}));
+        assertEquals(-3, Main.centeredAverage(new int[] { -10, -4, -2, -4, -2, 0 }));
+    }
+
+
+//    @Test
+//    public void split53() {
+//        assertTrue(Main.split53(new int[] { 1, 1 }));
+//        assertFalse(Main.split53(new int[] { 1, 1, 1 }));
+//        assertTrue(Main.split53(new int[] { 2, 3, 5 }));
+//    }
+
+
+    @Test
+    public void scoresClumpTest() {
+        assertTrue(Main.scoresClump(new int[] { 3, 4, 5 }));
+        assertFalse(Main.scoresClump(new int[] { 3, 4, 6 }));
+        assertTrue(Main.scoresClump(new int[] { 1, 3, 5, 5 }));
+    }
+
+    @Test
     public void count8Counts() {
         assertEquals(1, Main.count8(8));
         assertEquals(2, Main.count8(818));
         assertEquals(4, Main.count8(8818));
+        assertEquals(6, Main.count8(188818));
     }
 
     @Test

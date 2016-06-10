@@ -1,66 +1,212 @@
 package com.theironyard.clt;
 
-import static javax.measure.unit.SI.*;
-import static javax.measure.unit.NonSI.*;
-import static org.jscience.economics.money.Currency.*;
-
-import com.sun.deploy.util.StringUtils;
-import com.sun.tools.javac.util.ArrayUtils;
-import junit.extensions.TestSetup;
-import org.jscience.economics.money.*;
-import org.jscience.economics.money.Currency;
-import org.jscience.physics.amount.Amount;
-import sun.misc.Regexp;
-
 import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
 import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
-import static java.util.Comparator.comparing;
 
 public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
-//        MountainBike bike = new MountainBike(4, 4, 4, 21);
-        List<Double> test = new ArrayList<>();
+        ArrayList<Integer> list = new ArrayList();
 
-        test.add(1.0);
-        test.add(2.0);
-        test.add(3.0);
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(4);
+        list.add(5);
+        list.add(6);
 
-        System.out.println(Algorithm.sumOfList(test));
+        System.out.println(myPermute(list));
+    }
 
-        Algorithm.testMethod(5);
+    public static boolean linearIn(Integer[] inner, Integer[] outer) {
+        List<Integer> innerList = Arrays.asList(inner);
 
-        Amount<Money> start = Amount.valueOf(19.99, USD);
+        return Arrays.stream(outer).allMatch(i -> innerList.contains(i));
+    }
 
-        start = start.times(1.15);
+    public static String mixString(String a, String b) {
+        int longest = a.length() > b.length() ? a.length() : b.length();
 
-        System.out.println(start.toText());
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0;i < longest;i++) {
+            if (i < a.length()) {
+                sb.append(a.charAt(i));
+            }
+
+            if (i < b.length()) {
+                sb.append(b.charAt(i));
+            }
+        }
+
+        return sb.toString();
+    }
+
+    public static boolean isEverywhere(int[] numbers, int test) {
+        List<Integer> intList = Arrays.stream(numbers).mapToObj(Integer::new).collect(Collectors.toList());
+
+        for(int i = 0;i < intList.size() - 1;i++) {
+            int lowIdx = i;
+            int highIdx = i + 2;
+
+            if (!intList.subList(lowIdx, highIdx).contains(test)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static int centeredAverage(int[] input) {
+        List<Integer> intList = Arrays.stream(input).mapToObj(Integer::new).collect(Collectors.toList());
+
+        intList.remove(Collections.max(intList));
+        intList.remove(Collections.min(intList));
+
+        return intList.stream().collect(Collectors.averagingInt(i -> i)).intValue();
+    }
+
+    private static List<List<Integer>> myPermute(List<Integer> input) {
+        List<List<Integer>> results = new ArrayList<>();
+
+        input.forEach(i -> {
+            List<Integer> permutes = new ArrayList<>(input);
+
+            permutes.remove(i);
+
+            List<List<Integer>> subPermutations = myPermute(permutes);
+
+            if (subPermutations.size() == 0) {
+                List<Integer> list = new ArrayList<>();
+
+                list.add(i);
+
+                results.add(list);
+            } else {
+                subPermutations.forEach(l -> {
+                    l.add(0, i);
+
+                    results.add(l);
+                });
+            }
+        });
+
+        return results;
+    }
+
+    private static void permute(java.util.List<Integer> arr, int k){
+        for(int i = k; i < arr.size(); i++){
+            java.util.Collections.swap(arr, i, k);
+            permute(arr, k+1);
+            java.util.Collections.swap(arr, k, i);
+        }
+        if (k == arr.size() -1){
+            System.out.println(java.util.Arrays.toString(arr.toArray()));
+        }
+    }
+
+    private static Integer[] iterateRecurse(Integer[] input) {
+        if (input.length == 0) {
+            System.out.println("Done.");
+            return new Integer[0];
+        }
+
+        ArrayList<Integer> results = new ArrayList<>();
+
+        results.add(input[input.length-1]);
+
+        results.addAll(Arrays.asList(iterateRecurse(Arrays.copyOfRange(input, 0, input.length - 1))));
+
+        return results.toArray(new Integer[0]);
+    }
+
+    private static boolean split53(int[] left, int[] right) {
+        if (left.length == 0) {
+            return false;
+        }
+
+        if (Arrays.stream(left).sum() == Arrays.stream(right).sum()) {
+            boolean leftFives = Arrays.stream(left).anyMatch(i -> i % 5 == 0);
+            boolean rightFives = Arrays.stream(right).anyMatch(i -> i % 5 == 0);
+
+            boolean leftThreeNotfive = Arrays.stream(left).anyMatch(i -> i % 3 == 0 && i % 5 != 0);
+            boolean rightThreeNotfive = Arrays.stream(right).anyMatch(i -> i % 3 == 0 && i % 5 != 0);
+
+            if (!(leftFives || rightFives || leftThreeNotfive || rightThreeNotfive)) {
+                return true;
+            } else if (leftFives != rightFives || leftThreeNotfive != rightThreeNotfive) {
+                return true;
+            }
+        }
+
+        int[] newRight = Arrays.copyOf(right, right.length + 1);
+        newRight[newRight.length - 1] = left[left.length - 1];
+
+        return split53(Arrays.copyOf(left, left.length - 1), newRight);
+    }
+
+    public static boolean split53(int[] input) {
+        return split53(input, new int[0]);
+    }
+
+    /**
+     * Scans the integers in the input parameter to identify
+     * whether or not there is a group of three adjacent ints
+     * that do not differ by more than 2.
+
+     * @param input A _sorted_ array of integers to analyze.
+     * @return A boolean that represents whether or not this array
+     * contains a group of three adjacent numbers that differ by
+     * at most 2.
+     */
+    public static boolean scoresClump(int[] input) {
+        // in order to have a clump of 3 ints,
+        // we have to have at least 3 ints.
+        if (input.length < 3) {
+            return false;
+        } else {
+            // a clump is defined as having a int on
+            // the left as well as one on the right,
+            // so when analyzing a clump, we start
+            // from the second element and end at
+            // the second-to-last element.
+            for (int i = 1; i <= input.length - 2;i++) {
+                if (input[i+1] - input[i-1] <= 2) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 
     public static int count8(int input) {
-        boolean foundEight = input % 10 == 8;
+        boolean lastIsEight = input % 10 == 8;
 
         input /= 10;
 
-        boolean prevEight = input % 10 == 8;
+        boolean eightOnLeft = input % 10 == 8;
 
-        if (foundEight) {
-            if (prevEight) {
-                return input == 0 ? 2 : 2 + count8(input);
+        if (input == 0) {
+            if (lastIsEight && eightOnLeft) {
+                return 2;
+            } else if (lastIsEight) {
+                return 1;
             } else {
-                return input == 0 ? 1 : 1 + count8(input);
+                return 0;
             }
+        }
 
+        if (lastIsEight && eightOnLeft) {
+            return 2 + count8(input);
+        } else if (lastIsEight) {
+            return 1 + count8(input);
         } else {
-            return input == 0 ? 0 : count8(input);
+            return count8(input);
         }
     }
 
