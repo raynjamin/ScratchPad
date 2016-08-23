@@ -13,6 +13,37 @@ import static org.junit.Assert.*;
  */
 public class MainTest {
     @Test
+    public void stringSplosionTest() {
+        assertEquals("CCoCodCode", Main.stringSplosion("Code"));
+        assertEquals("aababc", Main.stringSplosion("abc"));
+        assertEquals("aab", Main.stringSplosion("ab"));
+    }
+    @Test
+    public void firstChar() {
+        Map<String, String> expected = new HashMap<>();
+        expected.put("t", "teatoast");
+        expected.put("s", "saltsoda");
+        assertEquals(expected, Main.firstChar(new String[] { "salt", "tea", "soda", "toast" }));
+
+        expected = new HashMap<>();
+        expected.put("d", "d");
+        expected.put("b", "bb");
+        expected.put("c", "cccCC");
+        expected.put("a", "aaaAA");
+        assertEquals(expected, Main.firstChar(new String[] { "aa", "bb", "cc", "aAA", "cCC", "d" }));
+
+        assertEquals(new HashMap<String, String>(), Main.firstChar(new String[] { }));
+    }
+
+    @Test
+    public void roundSumTest() {
+//        assertEquals(60, Main.roundSum(16, 17, 18));
+//        assertEquals(30, Main.roundSum(12, 13, 14));
+//        assertEquals(10, Main.roundSum(6, 4, 4));
+    }
+
+
+    @Test
     public void linearIn() {
         assertTrue(Main.linearIn(new Integer[] { 1, 2, 4, 6 }, new Integer[] { 2, 4 }));
         assertFalse(Main.linearIn(new Integer[] { 1, 2, 4, 6 }, new Integer[] { 2, 3, 4 }));

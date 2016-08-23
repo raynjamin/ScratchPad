@@ -1,5 +1,10 @@
 package com.theironyard.clt;
 
+import com.theironyard.clt.montyhall.Car;
+import com.theironyard.clt.montyhall.Entry;
+import com.theironyard.clt.montyhall.EntryFactory;
+import com.theironyard.clt.montyhall.Goat;
+
 import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -9,17 +14,85 @@ import java.util.stream.Stream;
 
 public class Main {
 
+    public static int sum(int a, int b) {
+        return a + b;
+    }
+
     public static void main(String[] args) throws FileNotFoundException {
-        ArrayList<Integer> list = new ArrayList();
+        Color backgroundColor = new Color();
 
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        list.add(4);
-        list.add(5);
-        list.add(6);
+        backgroundColor.setRed(10);
+        backgroundColor.setGreen(250);
+        backgroundColor.setBlue(55);
 
-        System.out.println(myPermute(list));
+
+        int total = 11;
+
+        total = 42;
+
+        total++;
+
+        total = total + 2;
+
+        String greeting = "Hello";
+
+        float percentile = 99.9f;
+
+        short meaningOfUniverse = 42;
+        long numberOfAtomsInUniverse = 21400000000L;
+
+
+
+
+
+
+
+
+
+        int success = 0;
+        final int iterations = 1000000;
+
+        for (int i = 0;i < iterations;i++) {
+            if (runSimulation()) {
+                success++;
+            }
+        }
+
+        System.out.println(((float)success/iterations)*100);
+    }
+
+    private static boolean runSimulation() {
+        List<Entry> game = EntryFactory.getRandomEntries();
+
+        Entry selectedEntry = game.remove((int)(Math.random() * game.size()));
+
+        return selectedEntry instanceof Goat;
+    }
+
+    public static String stringSplosion(String input) {
+        String results = "";
+
+        for (int i = 0;i < input.length();i++) {
+            results += input.substring(0, i + 1);
+        }
+
+        return results;
+    }
+
+    public static Map<String, String> firstChar(String[] strings) {
+        return Arrays.stream(strings).collect(
+                Collectors.toMap(
+                    i -> String.valueOf(i.charAt(0)),
+                    i -> Arrays.stream(strings)
+                            .filter(s -> s.startsWith(String.valueOf(i.charAt(0))))
+                            .reduce("", (n, k) -> n + k),
+                    (k1, nop) -> k1));
+    }
+
+    public static int roundSum(int... args) {
+        return Arrays.stream(args)
+                .map(i -> Math.round(i / 10) * 10)
+                .sum();
     }
 
     public static boolean linearIn(Integer[] inner, Integer[] outer) {
